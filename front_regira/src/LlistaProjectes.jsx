@@ -18,7 +18,7 @@ export default () => {
 
     useEffect(() => {
 
-        fetch(API_URL + '/projectes', opcions)
+        fetch(API_URL + '/projects', opcions)
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {
@@ -38,7 +38,9 @@ export default () => {
     return (<>
         <h1>Llista de projectes</h1>
 
-
+        <button className="border p-3 bg-red-200" onClick={()=>redirect('/project/new')}>Nou</button>
+        <br />
+        <br />
         <div className="flex flex-col">
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -61,7 +63,7 @@ export default () => {
                                     <td className="whitespace-nowrap px-6 py-4 font-medium">{projecte.id}</td>
                                     <td className="whitespace-nowrap px-6 py-4">{projecte.name}</td>
                                     <td className="whitespace-nowrap px-6 py-4">{projecte.desc}</td>
-                                    <td className="whitespace-nowrap px-6 py-4"><button className="border p-2 bg-yellow-300" onClick={()=>redirect("/projecte/"+projecte.id)} >Kanban</button></td>
+                                    <td className="whitespace-nowrap px-6 py-4"><button className="border p-2 bg-yellow-300" onClick={()=>redirect("/kanban/"+projecte.id)} >Kanban</button></td>
                                 </tr>)
                                 )}
 

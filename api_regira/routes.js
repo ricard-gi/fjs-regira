@@ -3,6 +3,7 @@ const router = express.Router(); // Crea un router d'Express
 const bcrypt = require('bcrypt'); // Importa la llibreria bcrypt per a encriptar contrasenyes
 const jwt = require('jsonwebtoken'); // Importa la llibreria jsonwebtoken per a generar i verificar JWT
 
+const SECRET_KEY = "vols-que-et-punxi-amb-un-punxo";
 
 const { Project,
   Issue,
@@ -77,7 +78,7 @@ router.post('/login', async (req, res) => {
     }
     const token = jwt.sign({ userId: user.id, userName: user.name }, SECRET_KEY, { expiresIn: '2h' }); // Genera un token JWT vàlid durant 2 hores
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 }); // Estableix el token com una cookie
-    res.json({ message: 'Login correcte' }); // Retorna missatge d'èxit
+    res.json({ name: user.name, id: user.id }); // Retorna missatge d'èxit
   } catch (error) {
     res.status(500).json({ error: error.message }); // Retorna error 500 amb el missatge d'error
   }

@@ -11,32 +11,28 @@ export default () => {
 
     const [nom, setNom] = useState('');
     const [desc, setDesc] = useState('');
-    const [imatge, setImatge] = useState();
-    const [tipus, setTipus] = useState('Comestible');
+    const [tipus, setTipus] = useState('');
     const redirect = useNavigate();
 
 
-    const creaBolet = (e) => {
+    const creaProjecte = (e) => {
 
         e.preventDefault();
 
-        const data = new FormData()
-        data.append('foto', imatge);
-        data.append("nom", nom);
-        data.append("desc", '');
-        data.append("tipus", tipus);
+        const projecte = { name:nom, desc}
 
         const options = {
             method: "POST",
-            body: data,
+            body: JSON.stringify(projecte),
             credentials: 'include',
+
         }
 
-        fetch(API_URL + '/bolets', options)
+        fetch(API_URL + '/projects', options)
             .then(res => res.json())
             .then(data => {
                 console.log("resp", data);
-                redirect('/')
+                redirect('/projects')
             })
             .catch(cosa => console.log(cosa))
 
@@ -47,7 +43,7 @@ export default () => {
 
 
         <div className="w-full max-w-md">
-            <form onSubmit={creaBolet} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form onSubmit={creaProjecte} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                         Nom
@@ -66,7 +62,6 @@ export default () => {
                     </label>
                 </div>
                 <div className="radio">
-
                     <label>
                         <input type="radio" value="No Comestible" name="tipus"
                             checked={tipus === 'No Comestible'}

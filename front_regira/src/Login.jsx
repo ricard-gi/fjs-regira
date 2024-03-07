@@ -1,15 +1,17 @@
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { useNavigate } from 'react-router-dom';
+import Contexte from "./Contexte";
 
 
 const API_URL = 'http://localhost:3000/api';
 
 
 export default () => {
+    const {setLoguejat} = useContext(Contexte)
 
-    const [email, setEmail] = useState('marta@gmail.com');
+    const [email, setEmail] = useState('ricard@codesplai.com');
     const [password, setPassword] = useState('');
     const redirect = useNavigate();
 
@@ -38,7 +40,10 @@ export default () => {
         .then(resp => resp.json())
         .then(data => {
             console.log("resp", data);
-            redirect('/')
+            if (!data.error){
+                setLoguejat(data)
+                redirect('/')
+            }
             
         })
         .catch(err => console.log(err))

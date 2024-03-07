@@ -19,10 +19,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
           <Route index element={<Inici />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/llista" element={<LlistaProjectes />} />
-          <Route path="/projecte/:id" element={<Kanban />} />
-          <Route path="/projecte/nou" element={<NouProjecte />} />
-          <Route path="/issue/nou" element={<NouIssue />} />
+          <Route path="/projects" element={<LlistaProjectes />} />
+          <Route path="/kanban/:id" element={<Kanban />} />
+          <Route path="/project/new" element={<NouProjecte />} />
+          <Route path="/issue/new" element={<NouIssue />} />
           
         </Route>
       </Routes>
