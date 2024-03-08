@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/projects" element={<LlistaProjectes />} />
           <Route path="/kanban/:id" element={<Kanban />} />
           <Route path="/project/new" element={<NouProjecte />} />
-          <Route path="/issue/new" element={<NouIssue />} />
+          <Route path="/issue/new/:projectid" element={<NouIssue />} />
           
         </Route>
       </Routes>

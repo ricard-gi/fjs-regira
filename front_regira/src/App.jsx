@@ -15,7 +15,6 @@ function App() {
 
   const dades = {loguejat, setLoguejat}
 
-
   return (
     <Contexte.Provider value={dades}>
 
@@ -23,8 +22,7 @@ function App() {
 
         <div className="flex justify-between mb-10">
           <Link className="border px-4 py-2 bg-blue-700 text-white" to="/" >Inici</Link>
-          <Link className="border px-4 py-2 bg-blue-700 text-white" to="/projects">Projectes</Link>
-          <Link className="border px-4 py-2 bg-blue-700 text-white" to="/project/new">Nou Projecte</Link>
+          {loguejat && <Link className="border px-4 py-2 bg-blue-700 text-white" to="/projects">Projectes</Link>}
           {!loguejat && <Link className="border px-4 py-2 bg-blue-700 text-white" to="/login" >Login</Link>}
           {loguejat && <button className="border px-4 py-2 bg-blue-700 text-white" onClick={handleLogout}>Logout {loguejat.name}</button>}
 

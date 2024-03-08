@@ -1,9 +1,11 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Contexte from "./Contexte";
 
 
 const API_URL = 'http://localhost:3000/api';
+
 
 
 export default () => {
@@ -11,12 +13,20 @@ export default () => {
     const [projectes, setProjectes] = useState([])
     const [error, setError] = useState('')
     const redirect = useNavigate();
+    const {loguejat} = useContext(Contexte)
 
-    const opcions = {
-        credentials: 'include',
-    }
+    useEffect(()=>{
+        if (!loguejat){
+            redirect('/login')
+        }
+    }, [loguejat])
+ 
 
     useEffect(() => {
+
+        const opcions = {
+            credentials: 'include',
+        }
 
         fetch(API_URL + '/projects', opcions)
             .then(resp => resp.json())

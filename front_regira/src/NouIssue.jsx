@@ -1,7 +1,8 @@
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Contexte from "./Contexte";
 
 
 const API_URL = 'http://localhost:3000/api';
@@ -9,30 +10,41 @@ const API_URL = 'http://localhost:3000/api';
 
 export default () => {
 
-    const [nom, setNom] = useState('');
+    const [titol, setTitol] = useState('');
     const [desc, setDesc] = useState('');
-    const [tipus, setTipus] = useState('');
+    const [tipus, setTipus] = useState('task');
+    const [prioritat, setPrioritat] = useState('medium');
     const redirect = useNavigate();
+    const { loguejat } = useContext(Contexte)
+    const { projectid } = useParams()
+
+    useEffect(() => {
+        if (!loguejat) {
+            redirect('/login')
+        }
+    }, [loguejat])
 
 
-    const creaProjecte = (e) => {
+    const creaIssue = (e) => {
 
         e.preventDefault();
 
-        const projecte = { name:nom, desc}
+        const issue = { title: titol, desc, type: tipus, priority: prioritat }
 
         const options = {
             method: "POST",
-            body: JSON.stringify(projecte),
+            body: JSON.stringify(issue),
             credentials: 'include',
-
+            headers: {
+                "Content-Type": "application/json"
+            }
         }
 
-        fetch(API_URL + '/projects', options)
+        fetch(API_URL + '/issues/project/' + projectid, options)
             .then(res => res.json())
             .then(data => {
-                console.log("resp", data);
-                redirect('/projects')
+                //console.log("resp", data);
+                redirect('/kanban/'+projectid)
             })
             .catch(cosa => console.log(cosa))
 
@@ -43,47 +55,94 @@ export default () => {
 
 
         <div className="w-full max-w-md">
-            <form onSubmit={creaProjecte} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form onSubmit={creaIssue} className="bg-white px-8 pt-6 pb-8 mb-4">
+            <h1 className="">Nova isssue</h1>
+            <br />
+
+            <hr />
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                        Nom
+                        Titol
                     </label>
                     <input
-                        onInput={(e) => setNom(e.target.value)}
-                        value={nom}
+                        onInput={(e) => setTitol(e.target.value)}
+                        value={titol}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Nom" />
                 </div>
-                <div className="radio">
-                    <label>
-                        <input type="radio" value="Comestible" name="tipus"
-                            checked={tipus === 'Comestible'}
-                            onChange={() => setTipus("Comestible")} />
-                        Comestible
-                    </label>
-                </div>
-                <div className="radio">
-                    <label>
-                        <input type="radio" value="No Comestible" name="tipus"
-                            checked={tipus === 'No Comestible'}
-                            onChange={() => setTipus("No Comestible")} />
-                        No Comestible
-                    </label>
-                </div>
-                <div className="radio">
 
-                    <label>
-                        <input type="radio" value="Perillós" name="tipus"
-                            checked={tipus === 'Perillós'}
-                            onChange={() => setTipus("Perillós")} />
-                        Perillós
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                        Desc
                     </label>
-
-
+                    <textarea
+                        onInput={(e) => setDesc(e.target.value)}
+                        value={desc}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Nom" />
                 </div>
-                <label for="formfile" className="form-label">File</label>
-                <input className="form-control " id="formfile" type="file" name="file" onChange={(e) => setImatge(e.target.files[0])} />
+
+                <div className="border p-4 bg-blue-200 m-4">
+
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="bug" name="tipus"
+                                checked={tipus === 'bug'}
+                                onChange={() => setTipus("bug")} />
+                            Bug
+                        </label>
+                    </div>
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="feature" name="tipus"
+                                checked={tipus === 'feature'}
+                                onChange={() => setTipus("feature")} />
+                            User story / Feature
+                        </label>
+                    </div>
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="task" name="tipus"
+                                checked={tipus === 'task'}
+                                onChange={() => setTipus("task")} />
+                            Task
+                        </label>
+                    </div>
+                </div>
+
+                <div className="border p-4 bg-red-200 m-4">
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="high" name="prioritat"
+                                checked={prioritat === 'high'}
+                                onChange={() => setPrioritat("high")} />
+                            High
+                        </label>
+                    </div>
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="medium" name="prioritat"
+                                checked={prioritat === 'medium'}
+                                onChange={() => setPrioritat("medium")} />
+                            Medium
+                        </label>
+                    </div>
+                    <div className="radio">
+                        <label>
+                            <input type="radio" value="low" name="prioritat"
+                                checked={prioritat === 'low'}
+                                onChange={() => setPrioritat("low")} />
+                            Low
+                        </label>
+                    </div>
+                </div>
+
+
+                <br />
+                <br />
+
 
                 <div >
+                <br />
+
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                         Desar
                     </button>
