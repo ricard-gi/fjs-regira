@@ -10,6 +10,7 @@ function App() {
   const handleLogout = () => {
     // Clear the authentication token cookie
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Set the expiration date to a past date
+    setLoguejat(null)
     window.location.href = "/login"; // Redirect to the login page
   };
 

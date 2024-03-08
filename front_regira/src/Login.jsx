@@ -17,16 +17,11 @@ export default () => {
 
 
     const logueja = (e) => {
-
         e.preventDefault();
-
-        //console.log("loguejant..", email, password)
-
         const credencials = {
             email,
             password
         }
-
         const opcions = {
             method: 'POST',
             credentials: 'include',
@@ -44,16 +39,12 @@ export default () => {
                 setLoguejat(data)
                 redirect('/projects')
             }
-            
         })
         .catch(err => console.log(err))
-
     }
 
 
     return (
-
-
 
         <div className="w-full max-w-xs m-auto">
             <form onSubmit={logueja} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

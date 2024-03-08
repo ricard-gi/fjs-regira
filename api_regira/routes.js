@@ -124,6 +124,24 @@ router.get('/projects/:id', async (req, res) => await readItem(req, res, Project
 // Elimina un Project, issues i comments relacionats s'haurien d'eliminar en cascada tal com descriu el model
 router.delete('/projects/:id', async (req, res) => await deleteItem(req, res, Project));
 
+router.get('/projectsx',  async (req, res) => {
+    const projectes = await Project.findAll({include: {model: Issue, include: Comment}})
+    res.json(projectes)
+
+}); // Llegeix tots els projectes
+
+// GET per retornar els issues d'un projecte
+router.get('/project/:project_id/issues', async (req, res) => {
+  try {
+    const projecte = await Project.findByPk(req.params.project_id, {include: Issue}); // Cerca el projecte pel seu ID
+    if (!projecte) {
+      return res.status(404).json({ error: 'Projecte no trobat' }); // Retorna error 404 si el projecte no es troba
+    }
+    res.json(projecte); // Retorna el projecte amb els issues
+  } catch (error) {
+    res.status(500).json({ error: error.message }); // Retorna error 500 amb el missatge d'error
+  }
+});
 
 
 /*
@@ -141,19 +159,7 @@ router.get('/issues/:id', async (req, res) => await readItem(req, res, Issue)); 
 router.delete('/issues/:id', async (req, res) => await deleteItem(req, res, Issue)); // Elimina una issue
 
 
-// GET per retornar els issues d'un projecte
-router.get('/issues/project/:project_id', async (req, res) => {
-  try {
-    const projecte = await Project.findByPk(req.params.project_id); // Cerca el projecte pel seu ID
-    if (!projecte) {
-      return res.status(404).json({ error: 'Projecte no trobat' }); // Retorna error 404 si el projecte no es troba
-    }
-    const issues = await projecte.getIssues(); // Obté totes els issues del projecte
-    res.json(issues); // Retorna les issues
-  } catch (error) {
-    res.status(500).json({ error: error.message }); // Retorna error 500 amb el missatge d'error
-  }
-});
+
 
 // POST per crear una issue per un projecte
 router.post('/issues/project/:project_id', async (req, res) => {

@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Contexte from "./Contexte";
 
-
 const API_URL = 'http://localhost:3000/api';
 
 
@@ -13,6 +12,7 @@ export default () => {
     const [projectes, setProjectes] = useState([])
     const [error, setError] = useState('')
     const redirect = useNavigate();
+   
     const {loguejat} = useContext(Contexte)
 
     useEffect(()=>{

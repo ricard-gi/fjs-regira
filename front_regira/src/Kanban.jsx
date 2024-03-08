@@ -3,9 +3,21 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Contexte from "./Contexte";
+import IssueCard from './IssueCard';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import './Test.css';
 
 
 const API_URL = 'http://localhost:3000/api';
+
+const states = ['backlog', 'in_progress', 'review', 'done', 'closed']
+const CAIXES = states.map(e => { return { id: e, label: e }});
+
+
+
+
+
 
 
 export default () => {
@@ -32,23 +44,14 @@ export default () => {
             credentials: 'include',
         }
 
-        fetch(API_URL + '/projects/' + id, opcions)
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.error) {
-                    setError(error)
-                    throw error;
-                } else {
-                    setProjecte(data);
-                }
-            })
-            .then(() => fetch(API_URL + '/issues/project/' + id, opcions))
+        fetch(API_URL + '/project/' + id + '/issues', opcions)
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {
                     setError(error)
                 } else {
-                    setIssues(data);
+                    setProjecte({name:data.name,  desc: data.desc})
+                    setIssues(data.Issues);
                 }
             })
             .catch(err => {
@@ -76,43 +79,12 @@ export default () => {
             <button className="border p-3 bg-red-200" onClick={() => redirect(`/issue/new/${id}`)}>Nova issue</button>
             <br />
             <br />
-            <div className="flex flex-col">
-                <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                        <div className="overflow-hidden">
-                            <table
-                                className="min-w-full text-left text-sm font-light text-surface dark:text-white">
-                                <thead
-                                    className="border-b border-neutral-200 font-medium dark:border-white/10">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-4">#</th>
-                                        <th scope="col" className="px-6 py-4">Titol</th>
-                                        <th scope="col" className="px-6 py-4">Descripcio</th>
-                                        <th scope="col" className="px-6 py-4">Tipus</th>
-                                        <th scope="col" className="px-6 py-4">Prioritat</th>
-                                        <th scope="col" className="px-6 py-4">Estat</th>
-                                        <th scope="col" className="px-6 py-4"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                    {issues.map(issue =>
-                                    (<tr key={issue.id} className="border-b border-neutral-200 dark:border-white/10">
-                                        <td className="whitespace-nowrap px-6 py-4 font-medium">{issue.id}</td>
-                                        <td className="whitespace-nowrap px-6 py-4">{issue.title}</td>
-                                        <td className="whitespace-nowrap px-6 py-4">{issue.desc}</td>
-                                        <td className="whitespace-nowrap px-6 py-4">{issue.type}</td>
-                                        <td className="whitespace-nowrap px-6 py-4">{issue.priority}</td>
-                                        <td className="whitespace-nowrap px-6 py-4">{issue.state}</td>
-                                    </tr>)
-                                    )}
+            <div className="grid grid-cols-4">
+                {issues.map(issue => <IssueCard key={issue.id} data={issue} /> )}
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
+        
         </>
     )
 }
