@@ -2,6 +2,8 @@ import './App.css'
 import { Outlet, Link } from "react-router-dom";
 import Contexte from "./Contexte";
 import { useState } from 'react';
+import { useEffect } from 'react';
+const API_URL = 'http://localhost:3000/api';
 
 function App() {
 
@@ -15,6 +17,17 @@ function App() {
   };
 
   const dades = {loguejat, setLoguejat}
+
+  useEffect(() => {
+
+    fetch(API_URL+'/refresh', {credentials: "include"})
+    .then(e => e.json())
+    .then(data => {
+      if (!data.error){
+        setLoguejat(data)
+      }
+    })
+  }, [])
 
   return (
     <Contexte.Provider value={dades}>

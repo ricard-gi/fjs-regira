@@ -17,7 +17,7 @@ export default () => {
 
     useEffect(()=>{
         if (!loguejat){
-            redirect('/login')
+            //redirect('/login')
         }
     }, [loguejat])
  
