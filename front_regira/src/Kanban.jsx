@@ -9,7 +9,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import './Test.css';
 const ItemType = 'ITEM';
 
-const API_URL = 'http://localhost:3000/api';
 
 const states = ['backlog', 'in_progress', 'review', 'done', 'closed']
 const STATES = states.map(e => { return { id: e, label: e }});
@@ -63,12 +62,9 @@ export default () => {
 
     const { id } = useParams()
 
-    const { loguejat } = useContext(Contexte)
+    const { logout, API_URL } = useContext(Contexte)
 
-
-    const actualitzaBDD = (id,state) => {
-
-        
+    const actualitzaEstat = (id,state) => {
         const opcions = {
             credentials: 'include',
             method : 'PATCH',
@@ -76,11 +72,13 @@ export default () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({state})
-
         }
-
-        fetch(API_URL + '/issues/' + id , opcions);
-           
+        fetch(API_URL + '/issues/' + id , opcions)
+        .then(r => r.json())
+        .then(data => {
+            if (data.error == 'Unauthorized') logout();
+        })
+        .catch(err => console.log(err))
     }
 
     const mouItem = (item, caixa) => {
@@ -93,24 +91,13 @@ export default () => {
             return it;
         })
         setIssues(nousItems);
-
-        actualitzaBDD(litem, caixa);
-
+        actualitzaEstat(litem, caixa);
     }
 
-    
-    
     const eliminaItem = useCallback((nom) => {
         const items2 = issues.filter(e => e.title !== nom)
         setIssues(items2)
     }, [issues])
-
-
-    useEffect(() => {
-        if (!loguejat) {
-            redirect('/login')
-        }
-    }, [loguejat])
 
 
     useEffect(() => {
@@ -122,6 +109,8 @@ export default () => {
         fetch(API_URL + '/project/' + id + '/issues', opcions)
             .then(resp => resp.json())
             .then(data => {
+                if (data.error == 'Unauthorized') logout();
+                
                 if (data.error) {
                     setError(error)
                 } else {

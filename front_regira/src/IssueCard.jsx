@@ -1,8 +1,7 @@
-
-
 const State = ({value}) => <h2>{value}</h2> 
 const Priority = ({value}) => <h2>{value}</h2> 
 const Type = ({value}) => <h2>{value}</h2> 
+
 const getColorByType  = ({type}) => {
     if (type==='bug'){
         return 'bg-red-400';
@@ -15,8 +14,6 @@ const getColorByType  = ({type}) => {
 
 
 export default ({data, theRef, isDragging}) =>  {
-
-
 
 
 

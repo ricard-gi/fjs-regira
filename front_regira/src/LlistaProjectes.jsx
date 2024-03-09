@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Contexte from "./Contexte";
 
-const API_URL = 'http://localhost:3000/api';
 
 
 
@@ -13,14 +12,7 @@ export default () => {
     const [error, setError] = useState('')
     const redirect = useNavigate();
    
-    const {loguejat} = useContext(Contexte)
-
-    useEffect(()=>{
-        if (!loguejat){
-            //redirect('/login')
-        }
-    }, [loguejat])
- 
+    const {logout, API_URL} = useContext(Contexte)
 
     useEffect(() => {
 
@@ -31,6 +23,7 @@ export default () => {
         fetch(API_URL + '/projects', opcions)
             .then(resp => resp.json())
             .then(data => {
+                if (data.error=="Unauthorized") logout();
                 if (data.error) {
                     setError(error)
                 } else {

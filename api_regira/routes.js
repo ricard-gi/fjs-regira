@@ -125,8 +125,8 @@ router.post('/register', async (req, res) => {
 
 // Operacions CRUD per als Projects
 
-router.post('/projects', async (req, res) => await createItem(req, res, Project)); // Llegeix tots els projectes
-router.get('/projects',  async (req, res) => await readItems(req, res, Project)); // Llegeix tots els projectes
+router.post('/projects', checkToken, async (req, res) => await createItem(req, res, Project)); // Llegeix tots els projectes
+router.get('/projects',  checkToken, async (req, res) => await readItems(req, res, Project)); // Llegeix tots els projectes
 router.get('/projects/:id', async (req, res) => await readItem(req, res, Project)); // Llegeix un Project específic
 //router.put('/projects/:id', async (req, res) => await updateItem(req, res, Project)); // Actualitza un Project
 
@@ -140,7 +140,7 @@ router.get('/projectsx',  async (req, res) => {
 }); // Llegeix tots els projectes
 
 // GET per retornar els issues d'un projecte
-router.get('/project/:project_id/issues', async (req, res) => {
+router.get('/project/:project_id/issues', checkToken, async (req, res) => {
   try {
     const projecte = await Project.findByPk(req.params.project_id, {include: Issue}); // Cerca el projecte pel seu ID
     if (!projecte) {
@@ -168,7 +168,7 @@ router.get('/issues/:id', async (req, res) => await readItem(req, res, Issue)); 
 router.delete('/issues/:id', async (req, res) => await deleteItem(req, res, Issue)); // Elimina una issue
 
 // POST per crear una issue per un projecte
-router.post('/issues/project/:project_id', async (req, res) => {
+router.post('/issues/project/:project_id', checkToken, async (req, res) => {
   try {
     const projecte = await Project.findByPk(req.params.project_id); // Cerca el projecte pel seu ID
     if (!projecte) {
