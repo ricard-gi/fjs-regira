@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt'); // Importa la llibreria bcrypt per a encriptar
 
 const sequelize = new Sequelize('regira', 'root', 'admin', {
  // host: 'localhost',
-  host: '192.168.1.158', //IP de la base de dades
+  host: '192.168.1.133', //IP de la base de dades
   port: 3306,
   dialect: 'mysql' // connectem a mysql
 });

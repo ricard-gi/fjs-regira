@@ -68,21 +68,19 @@ export default () => {
 
     const actualitzaBDD = (id,state) => {
 
-        return true;
-        /*
+        
         const opcions = {
             credentials: 'include',
             method : 'PATCH',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({state})
 
         }
 
-        fetch(API_URL + '/project/' + id + '/issues', opcions)
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.error) {
-                    setError(error)
-                } else {
-                    */
+        fetch(API_URL + '/issues/' + id , opcions);
+           
     }
 
     const mouItem = (item, caixa) => {
@@ -90,7 +88,7 @@ export default () => {
         const nousItems = issues.map(it => {
             if (it.title === item) {
                 it.state = caixa;
-                litem.id = it.id;
+                litem = it.id;
             }
             return it;
         })

@@ -167,9 +167,6 @@ router.get('/project/:project_id/issues', async (req, res) => {
 router.get('/issues/:id', async (req, res) => await readItem(req, res, Issue)); // Llegeix una issue específica
 router.delete('/issues/:id', async (req, res) => await deleteItem(req, res, Issue)); // Elimina una issue
 
-
-
-
 // POST per crear una issue per un projecte
 router.post('/issues/project/:project_id', async (req, res) => {
   try {
@@ -205,7 +202,7 @@ router.post('/issues/:id_issue/users/:id_user', async (req, res) => {
 router.patch('/issues/:id_issue', async (req, res) => {
 
   try {
-    const existingIssue = await Issue.findByPk(id_issue);
+    const existingIssue = await Issue.findByPk(req.params.id_issue);
 
     if (!existingIssue) {
       return res.status(404).json({ error: "No s'ha trobat cap issue amb aquest ID" });
