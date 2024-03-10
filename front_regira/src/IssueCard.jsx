@@ -3,6 +3,7 @@ const Priority = ({value}) => <h2>{value}</h2>
 const Type = ({value}) => <h2>{value}</h2> 
 
 const getColorByType  = ({type}) => {
+    
     if (type==='bug'){
         return 'bg-red-400';
     } else if (type==='feature'){
@@ -13,17 +14,16 @@ const getColorByType  = ({type}) => {
 }
 
 
-export default ({data, theRef, isDragging}) =>  {
-
-
+export default ({data, reference, isDragging, remove}) =>  {
 
     return (
         <>
-            <div ref = {theRef} style={{ opacity: isDragging ? 0.5 : 1 }} className={"border p-2 m-3 "+getColorByType(data)}>
+            <div ref = {reference}  className={"border p-2 m-3 "+getColorByType(data)}>
                 <h1>{data.title}</h1>
                 <Type value={data.type} />
                 <Priority value={data.priority} />
                 <State value={data.state} />
+                <button className="border p-2 bg-red-600 text-white" onClick={()=>remove(data)}>Elimina</button>
             </div>
         </>
     )
