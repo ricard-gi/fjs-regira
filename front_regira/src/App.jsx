@@ -16,26 +16,30 @@ function App() {
 
   const [loguejat, setLoguejat] = useState(null)
 
-  const dades = {loguejat, setLoguejat, logout, API_URL}
-
-
+  // REFRESH DE LES CREDENCIALS
+  // per evitar demanar el login continuament...
   useEffect(() => {
-    // si tenim una cookie, intentem validar-la
+    // si tenim una cookie, intentem validar-la!
     if(document.cookie.includes('token')){
       fetch(API_URL+'/refresh', {credentials: "include"})
       .then(e => e.json())
       .then(data => {
         if (data.error){
-          // api rebutja la cookie local, l'esborrem
+          // api rebutja la cookie local, l'esborrem per mitjà de la funció logout()
           logout();
         } else {
-          // api accepta la cookie, simulem login
+          // api accepta la cookie, simulem login desant les dades rebudes a "loguejat"
           setLoguejat(data)
         }
       })
     }
   
   }, [])
+
+
+  // DADES PER CONTEXTE
+  const dades = {loguejat, setLoguejat, logout, API_URL}
+
 
   return (
     <Contexte.Provider value={dades}>

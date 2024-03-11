@@ -38,7 +38,7 @@ export default () => {
         fetch(API_URL + '/issues/project/' + projectid, options)
             .then(res => res.json())
             .then(data => {
-                data.error == 'Unauthorized' ? logout() : redirect('/kanban/' + projectid);
+                (data.error == 'Unauthorized') ? logout() : redirect('/kanban/' + projectid);
             })
             .catch(cosa => console.log(cosa))
     }

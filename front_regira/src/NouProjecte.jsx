@@ -9,6 +9,8 @@ export default () => {
     const redirect = useNavigate();
     const { logout, API_URL } = useContext(Contexte)
 
+
+    // funció que crea el projecte, fent FETCH a API
     const creaProjecte = (e) => {
         e.preventDefault();
         const options = {
@@ -23,7 +25,19 @@ export default () => {
         fetch(API_URL + '/projects', options)
             .then(res => res.json())
             .then(data => {
-                data.error == 'Unauthorized' ? logout() : redirect('/projects');
+                // si rebem "unathorized" vol dir que la cookie no és vàlida o està caducada
+                // en aquest cas forcem LOGOUT (perdem dades de projecte que s'anava a desar...)
+                (data.error == 'Unauthorized') ? logout() : redirect('/projects');
+                
+                // equivalent a: if (data.error == 'Unauthorized')  logout() ; else redirect('/projects');
+                // o a:
+                /*
+                if (data.error == 'Unauthorized') {
+                    logout()
+                } else {
+                    redirect("/projects")
+                }
+                */
             })
             .catch(err => console.log(err))
     }
