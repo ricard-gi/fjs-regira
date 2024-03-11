@@ -62,8 +62,17 @@ router.get('/users/:id', async (req, res) => await readItem(req, res, User)); //
 router.delete('/users/:id', async (req, res) => await deleteItem(req, res, User)); // Elimina un usuari
 
 
-// LOGIN I REGISTRE
 
+/*
+    ██╗          ██████╗      ██████╗     ██╗    ███╗   ██╗            ██╗         █████╗ ██╗   ██╗████████╗██╗  ██╗
+    ██║         ██╔═══██╗    ██╔════╝     ██║    ████╗  ██║           ██╔╝        ██╔══██╗██║   ██║╚══██╔══╝██║  ██║
+    ██║         ██║   ██║    ██║  ███╗    ██║    ██╔██╗ ██║          ██╔╝         ███████║██║   ██║   ██║   ███████║
+    ██║         ██║   ██║    ██║   ██║    ██║    ██║╚██╗██║         ██╔╝          ██╔══██║██║   ██║   ██║   ██╔══██║
+    ███████╗    ╚██████╔╝    ╚██████╔╝    ██║    ██║ ╚████║        ██╔╝           ██║  ██║╚██████╔╝   ██║   ██║  ██║
+    ╚══════╝     ╚═════╝      ╚═════╝     ╚═╝    ╚═╝  ╚═══╝        ╚═╝            ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝
+*/
+
+// LOGIN
 // Endpoint per iniciar sessió d'un usuari
 router.post('/login', async (req, res) => {
   const { email, password } = req.body; // Obté l'email i la contrasenya de la petició
@@ -84,8 +93,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/refresh', checkToken, async (req, res) => {
 
+// REFRESH verifica si token és vàlid
+router.get('/refresh', checkToken, async (req, res) => {
   const user = await User.findByPk(req.userId); // Cerca l'usuari pel seu email
   if (!user) {
     return res.status(404).json({ error: 'User no trobat' }); // Retorna error 404 si l'usuari no es troba
@@ -93,6 +103,7 @@ router.get('/refresh', checkToken, async (req, res) => {
   return res.json({id: user.id, name: user.name})
 })
 
+// REGISTER crea usuari
 // Endpoint per registrar un usuari
 router.post('/register', async (req, res) => {
   try {
