@@ -19,7 +19,7 @@ export default ({data, reference, isDragging, remove}) =>  {
     return (
         <>
             <div ref = {reference}  className={"border p-2 m-3 "+getColorByType(data)}>
-                <h1>{data.title}</h1>
+                <h1>{data.title} {data.id}</h1>
                 <Type value={data.type} />
                 <Priority value={data.priority} />
                 <State value={data.state} />

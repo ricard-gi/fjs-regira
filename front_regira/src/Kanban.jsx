@@ -130,12 +130,12 @@ export default () => {
 
     return (
         <>
-            <h1>Projecte: {projecte?.name}</h1>
-            <hr />
-            <h1>Issues</h1>
+        <div className="flex justify-between">
 
-            <br />
-            <button className="border p-3 bg-red-200" onClick={() => redirect(`/issue/new/${id}`)}>Nova issue</button>
+            <h1>Projecte: {projecte?.name}</h1>
+            <button className="border p-3 bg-red-200" onClick={() => redirect(`/issue/new/${id}`)}>Nova tasca</button>
+        </div>
+            <hr />
             <br />
             <br />
 
@@ -143,7 +143,7 @@ export default () => {
                 <div className="grid grid-cols-5 gap-3">
                     {
                         CAIXES.map(caixa => (
-                            <Box key={caixa} caixa={caixa} mouItem={mouItem}  >
+                            <Box key={caixa.state} caixa={caixa} mouItem={mouItem}  >
                                 {
                                     projecte.Issues.filter(e => e.state == caixa.state).map(e => <Item key={e.id} eliminaItem={eliminaItem} data={e} />)
                                 }
