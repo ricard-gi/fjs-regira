@@ -76,7 +76,7 @@ export default () => {
 
                 {/* Description */}
                 <div className="mb-4">
-                    <label htmlFor="description" className="block font-medium text-gray-700 mb-1">Descripció</label>
+                    <label htmlFor="desc" className="block font-medium text-gray-700 mb-1">Descripció</label>
                     <textarea
                         id="desc"
                         name="desc"

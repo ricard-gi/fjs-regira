@@ -11,6 +11,7 @@ function App() {
     // Clear the authentication token cookie
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Set the expiration date to a past date
     setLoguejat(null)
+    window.history.replaceState(null, null, "/");
     window.location.href = "/login"; // Redirect to the login page
   };
 
@@ -18,6 +19,7 @@ function App() {
 
   // REFRESH DE LES CREDENCIALS
   // per evitar demanar el login continuament...
+
   useEffect(() => {
     // si tenim una cookie, intentem validar-la!
     if(document.cookie.includes('token')){
